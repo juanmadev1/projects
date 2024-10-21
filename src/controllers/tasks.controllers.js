@@ -60,3 +60,12 @@ export const getTask = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find().populate('user', 'username');
+    res.json(tasks);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

@@ -10,3 +10,5 @@ export const updateTaskRequest = async (task) =>
 export const deleteTaskRequest = async (id) => axios.delete(`/tasks/${id}`);
 
 export const getTaskRequest = async (id) => axios.get(`/tasks/${id}`);
+
+export const getAllTasksRequest = async () => axios.get("/tasks");
