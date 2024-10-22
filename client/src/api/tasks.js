@@ -12,3 +12,5 @@ export const getTaskRequest = async (id) => axios.get(`/tasks/${id}`);
 export const addCommentRequest = (taskId, comment) => axios.post(`/tasks/${taskId}/comments`, comment);
 
 export const getCommentsRequest = (taskId) => axios.get(`/tasks/${taskId}/comments`);
+
+export const deleteCommentRequest = (taskId, commentId) => axios.delete(`/tasks/${taskId}/comments/${commentId}`);

@@ -121,3 +121,33 @@ export const getComments = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const deleteComment = async (req, res) => {
+  try {
+    const { taskId, commentId } = req.params;
+    const userId = req.user.id;
+
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ message: "Tarea no encontrada" });
+    }
+
+    const comment = task.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comentario no encontrado" });
+    }
+
+    // Verifica si el usuario es el autor del comentario o el autor de la tarea
+    if (comment.user.toString() !== userId && task.user.toString() !== userId) {
+      return res.status(403).json({ message: "No tienes permiso para eliminar este comentario" });
+    }
+
+    task.comments.pull({ _id: commentId });
+    await task.save();
+
+    res.json({ message: "Comentario eliminado con éxito" });
+  } catch (error) {
+    console.error("Error al eliminar comentario:", error);
+    return res.status(500).json({ message: error.message });
+  }
+};

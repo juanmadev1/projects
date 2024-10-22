@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext';
-import { addCommentRequest, getCommentsRequest } from '../api/tasks';
+import { addCommentRequest, getCommentsRequest, deleteCommentRequest } from '../api/tasks';
 import { MapComponent } from './MapComponent';
 import { Link } from 'react-router-dom';
 
@@ -37,6 +37,19 @@ function TaskDetailModal({ task, onClose }) {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    if (!isAuthenticated) {
+      alert("Debes iniciar sesión para eliminar comentarios.");
+      return;
+    }
+    try {
+      await deleteCommentRequest(task._id, commentId);
+      loadComments();
+    } catch (error) {
+      console.error("Error al eliminar el comentario:", error);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-zinc-800 p-8 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -61,10 +74,20 @@ function TaskDetailModal({ task, onClose }) {
         )}
         <div className="mt-6">
           <h3 className="text-lg font-semibold text-white mb-2">Comentarios</h3>
-          {comments.map((comment, index) => (
-            <div key={index} className="bg-zinc-700 p-2 rounded mb-2">
-              <p className="text-sm text-slate-300">{comment.content}</p>
-              <p className="text-xs text-slate-400">Por: {comment.user.username}</p>
+          {comments.map((comment) => (
+            <div key={comment._id} className="bg-zinc-700 p-2 rounded mb-2 flex justify-between items-start">
+              <div>
+                <p className="text-sm text-slate-300">{comment.content}</p>
+                <p className="text-xs text-slate-400">Por: {comment.user.username}</p>
+              </div>
+              {(isAuthenticated && (user.id === comment.user._id || user.id === task.user._id)) && (
+                <button
+                  onClick={() => handleDeleteComment(comment._id)}
+                  className="text-red-500 text-xs hover:underline"
+                >
+                  Eliminar
+                </button>
+              )}
             </div>
           ))}
         </div>

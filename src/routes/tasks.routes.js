@@ -8,6 +8,7 @@ import {
   getAllTasks,
   addComment,
   getComments,
+  deleteComment,
 } from "../controllers/tasks.controllers.js";
 import { auth } from "../middlewares/auth.middleware.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
@@ -31,5 +32,6 @@ router.delete("/tasks/:id", auth, deleteTask);
 
 router.post("/tasks/:taskId/comments", auth, addComment);
 router.get("/tasks/:taskId/comments", getComments);
+router.delete("/tasks/:taskId/comments/:commentId", auth, deleteComment);
 
 export default router;
