@@ -13,8 +13,8 @@ export const getTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
   try {
-    const { title, description, date } = req.body;
-    let imageUrl = null;
+    const { title, description, date, imageUrl } = req.body;
+    //let imageUrl = null;
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path);
       imageUrl = result.secure_url;

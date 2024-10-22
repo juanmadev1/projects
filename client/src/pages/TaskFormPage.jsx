@@ -26,7 +26,7 @@ export function TaskFormPage() {
       let imageUrl = null;
 
       // Si hay una imagen seleccionada, sube la imagen a Cloudinary
-      if (data.image.length > 0) {
+      if (data.image && data.image.length > 0) {
         const formData = new FormData();
         formData.append("file", data.image[0]);
         formData.append("upload_preset", "ml_default"); // Cambia esto por tu upload preset de Cloudinary
@@ -35,22 +35,24 @@ export function TaskFormPage() {
         imageUrl = response.data.secure_url; // Guarda la URL de la imagen
       }
 
+      // Prepara los datos de la tarea para enviar al backend
       const taskData = {
         ...data,
-        date: dayjs.utc(data.date).format(),
-        image: imageUrl, // Incluye la URL de la imagen si se subió
+        date: dayjs.utc(data.date).format(), // Asegúrate de que la fecha esté en el formato correcto
+        imageUrl: imageUrl, // Incluye la URL de la imagen si se subió
       };
 
+      // Llama a createTask o updateTask según si hay un ID de tarea
       if (params.id) {
-        updateTask(params.id, taskData);
+        await updateTask(params.id, taskData); // Espera a que se complete la actualización
       } else {
-        createTask(taskData);
+        await createTask(taskData); // Espera a que se complete la creación
       }
 
-      navigate("/tasks");
+      navigate("/tasks"); // Navega a la lista de tareas después de guardar
     } catch (error) {
-      console.log(error);
-      // window.location.href = "/";
+      console.error('Error al crear o actualizar la tarea:', error);
+      // Aquí puedes mostrar un mensaje de error al usuario
     }
   };
 
