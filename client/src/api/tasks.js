@@ -8,3 +8,7 @@ export const updateTaskRequest = async (task) =>
   axios.put(`/tasks/${task._id}`, task);
 export const deleteTaskRequest = async (id) => axios.delete(`/tasks/${id}`);
 export const getTaskRequest = async (id) => axios.get(`/tasks/${id}`);
+
+export const addCommentRequest = (taskId, comment) => axios.post(`/tasks/${taskId}/comments`, comment);
+
+export const getCommentsRequest = (taskId) => axios.get(`/tasks/${taskId}/comments`);

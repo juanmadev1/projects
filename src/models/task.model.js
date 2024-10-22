@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+const commentSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+}, { timestamps: true });
+
 const taskSchema = new mongoose.Schema(
   {
     title: {
@@ -32,7 +44,8 @@ const taskSchema = new mongoose.Schema(
         type: [Number],
         default: [0, 0]
       }
-    }
+    },
+    comments: [commentSchema]
   },
   {
     timestamps: true,

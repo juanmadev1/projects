@@ -6,6 +6,8 @@ import {
   getTasks,
   updateTask,
   getAllTasks,
+  addComment,
+  getComments,
 } from "../controllers/tasks.controllers.js";
 import { auth } from "../middlewares/auth.middleware.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
@@ -27,5 +29,7 @@ router.get("/tasks/:id", auth, getTask);
 router.put("/tasks/:id", auth, updateTask);
 router.delete("/tasks/:id", auth, deleteTask);
 
-export default router;
+router.post("/tasks/:taskId/comments", auth, addComment);
+router.get("/tasks/:taskId/comments", getComments);
 
+export default router;

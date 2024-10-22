@@ -87,3 +87,37 @@ export const getAllTasks = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const addComment = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const { content } = req.body;
+    const userId = req.user.id;  // Esto viene del middleware de autenticación
+
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ message: "Tarea no encontrada" });
+    }
+
+    task.comments.push({ user: userId, content });
+    await task.save();
+
+    const populatedTask = await Task.findById(taskId).populate('comments.user', 'username');
+    res.json(populatedTask);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getComments = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId).populate('comments.user', 'username');
+    if (!task) {
+      return res.status(404).json({ message: "Tarea no encontrada" });
+    }
+    res.json(task.comments);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
