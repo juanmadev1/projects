@@ -48,10 +48,19 @@ export const deleteTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    const { title, description, date } = req.body;
+    const { title, description, date, image, latitude, longitude } = req.body;
     const taskUpdated = await Task.findOneAndUpdate(
       { _id: req.params.id },
-      { title, description, date },
+      {
+        title,
+        description,
+        date,
+        image,
+        location: {
+          type: 'Point',
+          coordinates: [parseFloat(longitude), parseFloat(latitude)]
+        }
+      },
       { new: true }
     );
     return res.json(taskUpdated);

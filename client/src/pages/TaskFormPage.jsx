@@ -36,12 +36,15 @@ export function TaskFormPage() {
 
         const response = await axios.post("https://api.cloudinary.com/v1_1/dswkqhynv/image/upload", formData);
         imageUrl = response.data.secure_url;
+      } else if (typeof data.image === 'string') {
+        // Si es una edición y no se seleccionó una nueva imagen, mantén la URL existente
+        imageUrl = data.image;
       }
 
       const taskData = {
         ...data,
         date: data.date ? dayjs.utc(data.date).format() : null,
-        image: imageUrl,  // Cambiado de 'imageUrl' a 'image' para coincidir con el modelo
+        image: imageUrl,
         latitude: location.lat,
         longitude: location.lng,
       };
