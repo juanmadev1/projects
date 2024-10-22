@@ -1,4 +1,6 @@
 import Task from "../models/task.model.js";
+import cloudinary from "../utils/cloudinary.js"; // Asegúrate de importar la configuración de Cloudinary
+
 
 export const getTasks = async (req, res) => {
   try {
@@ -12,10 +14,16 @@ export const getTasks = async (req, res) => {
 export const createTask = async (req, res) => {
   try {
     const { title, description, date } = req.body;
+    let imageUrl = null;
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      imageUrl = result.secure_url;
+    }
     const newTask = new Task({
       title,
       description,
       date,
+      image: imageUrl,
       user: req.user.id,
     });
     await newTask.save();
