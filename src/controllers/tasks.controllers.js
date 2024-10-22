@@ -91,15 +91,16 @@ export const getAllTasks = async (req, res) => {
 export const addComment = async (req, res) => {
   try {
     const { taskId } = req.params;
-    const { content } = req.body;
-    const userId = req.user.id;  // Esto viene del middleware de autenticación
+    const { content, rating } = req.body;
+    const userId = req.user.id;
 
     const task = await Task.findById(taskId);
     if (!task) {
       return res.status(404).json({ message: "Tarea no encontrada" });
     }
 
-    task.comments.push({ user: userId, content });
+    task.comments.push({ user: userId, content, rating });
+    task.updateAverageRating();
     await task.save();
 
     const populatedTask = await Task.findById(taskId).populate('comments.user', 'username');
