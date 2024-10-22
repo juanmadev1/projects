@@ -57,6 +57,13 @@ function HomePage() {
               className="bg-zinc-800 p-4 rounded-md cursor-pointer hover:bg-zinc-700 transition-colors"
               onClick={() => handleTaskClick(task)}
             >
+              {task.image && (
+                <img
+                  src={task.image}
+                  alt={task.title}
+                  className="w-full h-40 object-cover mb-2 rounded"
+                />
+              )}
               <h3 className="text-xl font-semibold text-white">{task.title}</h3>
               <p className="text-slate-300 truncate">{task.description}</p>
               <p className="text-sm text-slate-400 mt-2">
