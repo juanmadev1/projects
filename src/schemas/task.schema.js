@@ -6,5 +6,7 @@ export const createTaskSchema = z.object({
   }),
   description: z.string().optional(),
   date: z.string().datetime().optional(),
-  imageUrl: z.string().url().optional(), // Añadir campo para la URL de la imagen
+  image: z.string().url().optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
 });

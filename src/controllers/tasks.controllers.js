@@ -13,21 +13,22 @@ export const getTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
   try {
-    const { title, description, date, imageUrl } = req.body;
-    //let imageUrl = null;
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      imageUrl = result.secure_url;
-    }
+    const { title, description, date, image, latitude, longitude } = req.body;
+
     const newTask = new Task({
       title,
       description,
       date,
-      image: imageUrl,
+      image,  // Asegúrate de que este campo se llame 'image'
       user: req.user.id,
+      location: {
+        type: 'Point',
+        coordinates: [parseFloat(longitude), parseFloat(latitude)]
+      }
     });
-    await newTask.save();
-    res.json(newTask);
+
+    const savedTask = await newTask.save();
+    res.json(savedTask);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

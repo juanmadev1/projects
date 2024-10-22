@@ -15,16 +15,30 @@ const taskSchema = new mongoose.Schema(
       default: Date.now,
     },
     user: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     image: {
-      type: String, // Campo para la URL de la imagen
+      type: String,
     },
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point'
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0]
+      }
+    }
   },
   {
     timestamps: true,
   }
 );
+
+taskSchema.index({ location: '2dsphere' });
 
 export default mongoose.model("Task", taskSchema);
