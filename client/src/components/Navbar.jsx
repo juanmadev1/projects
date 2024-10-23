@@ -1,24 +1,38 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { ButtonLink } from "./ui/ButtonLink";
+import logoImage from "../assets/logo.png"; // Asegúrate de que la ruta sea correcta
 
 export function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
+  const navigate = useNavigate();
   console.log(isAuthenticated, user)
 
+  const handleLogout = async () => {
+    const success = await logout();
+    if (success) {
+      navigate('/');
+    } else {
+      console.error("Error al cerrar sesión");
+    }
+  };
+
   return (
-    <nav className="bg-zinc-700 my-3 flex justify-between py-5 px-10 rounded-lg">
-      <h1 className="text-2xl font-bold">
-        <Link to="/">FoodIn</Link>
-      </h1>
-      <ul className="flex gap-x-2">
+    <nav className="bg-orange-600 my-3 flex justify-between items-center py-5 px-10 rounded-lg">
+      <div className="flex items-center">
+        <img src={logoImage} alt="FoodIn Logo" className="h-8 w-auto mr-2" /> {/* Ajusta el tamaño según necesites */}
+        <h1 className="text-2xl font-bold">
+          <Link to="/">FoodIn</Link>
+        </h1>
+      </div>
+      <ul className="flex gap-x-2 items-center">
         {isAuthenticated ? (
           <>
-            <li>
-              Welcome {user.username}
+            <li className="text-white">
+              Bienvenido {user.username}
             </li>
             <li>
-              <ButtonLink to="/">Home</ButtonLink>
+              <ButtonLink to="/">Inicio</ButtonLink>
             </li>
             <li>
               <ButtonLink to="/tasks">Mi Negocio</ButtonLink>
@@ -27,9 +41,9 @@ export function Navbar() {
               <ButtonLink to="/add-task">Añadir Negocio</ButtonLink>
             </li>
             <li>
-              <Link to="/" onClick={() => logout()}>
+              <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                 Cerrar Sesión
-              </Link>
+              </button>
             </li>
           </>
         ) : (

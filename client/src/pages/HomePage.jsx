@@ -33,6 +33,11 @@ function HomePage() {
     setFilteredTasks(results);
   }, [searchTerm, tasks]);
 
+  useEffect(() => {
+    console.log("Estado de autenticación:", isAuthenticated);
+    // Puedes añadir aquí lógica adicional si es necesario
+  }, [isAuthenticated]);
+
   const handleTaskClick = (task) => {
     setSelectedTask(task);
   };
@@ -61,14 +66,15 @@ function HomePage() {
   };
 
   return (
-    <section className="bg-zinc-900 min-h-screen">
-      <header className="bg-zinc-800 p-10">
-        <h1 className="text-5xl py-2 font-bold text-white">React Tasks</h1>
+    <section className="bg-gray-100 min-h-screen">
+      <header className="bg-white p-10">
+        <h1 className="text-5xl py-2 font-bold text-gray-800">Foodin</h1>
         {!isAuthenticated ? (
           <>
             <p className="text-md text-slate-400">
-              Gestiona tus tareas de manera eficiente con nuestra aplicación.
+              Foodin es una plataforma innovadora diseñada para conectar a los amantes de la comida con negocios locales recomendados. Nuestra misión es facilitar el descubrimiento de lugares únicos para disfrutar de deliciosos platillos, los usuarios pueden compartir sus experiencias y recomendar negocios, creando una comunidad vibrante de amantes de la comida.
             </p>
+            
             <Link
               className="bg-indigo-500 text-white px-4 py-2 rounded-md mt-4 inline-block hover:bg-indigo-600 transition-colors"
               to="/register"
@@ -77,19 +83,19 @@ function HomePage() {
             </Link>
           </>
         ) : (
-          <p className="text-md text-slate-400">
-            Bienvenido de vuelta, {user.username}! Aquí puedes ver todas las tareas.
+          <p className="text-md text-gray-900">
+            Bienvenido de vuelta, {user.username}! Aquí puedes ver los negocios cerca de ti.
           </p>
         )}
       </header>
 
       <div className="container mx-auto p-8">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-white">Todas las Tareas</h2>
+          <h2 className="text-3xl font-bold text-gray-800">Negocios recomendados</h2>
           <div className="relative">
             <input
               type="text"
-              placeholder="Buscar tareas..."
+              placeholder="Buscar negocios..."
               value={searchTerm}
               onChange={handleSearchChange}
               className="bg-zinc-700 text-white pl-10 pr-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
