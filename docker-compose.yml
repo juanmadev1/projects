@@ -7,7 +7,13 @@ services:
     restart: always
     ports:
       - 27017:27017
-    
-  
+    volumes:
+      - tasksdb-data:/data/db
+    networks:
+      - tasks_network
 
+networks:
+  tasks_network:
 
+volumes:
+  tasksdb-data:
