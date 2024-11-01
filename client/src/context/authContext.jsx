@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
-import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
+import { loginRequest, registerRequest, verifyTokenRequest, logoutRequest } from "../api/auth";
 import Cookies from "js-cookie";
 
 const AuthContext = createContext();
@@ -51,10 +51,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    Cookies.remove("token");
-    setUser(null);
-    setIsAuthenticated(false);
+  const logout = async () => {
+    try {
+      await logoutRequest();
+      Cookies.remove("token");
+      setUser(null);
+      setIsAuthenticated(false);
+      return true; // Indicar que el logout fue exitoso
+    } catch (error) {
+      console.error("Error during logout:", error);
+      return false; // Indicar que hubo un error durante el logout
+    }
   };
 
   useEffect(() => {
