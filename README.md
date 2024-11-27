@@ -12,8 +12,9 @@ npm run dev
 ### Deployment
 
 ```sh
-git clone https://github.com/FaztWeb/mern-tasks-auth
-cd mern-tasks-auth
+https://github.com/juanmadev1/projects
+
+cd projects
 npm i
 npm run build
 npm start

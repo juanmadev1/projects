@@ -11,11 +11,10 @@ services:
       - tasksdb-data:/data/db
     networks:
       - tasks_network
+   
 
 networks:
   tasks_network:
 
 volumes:
   tasksdb-data:
-
-
