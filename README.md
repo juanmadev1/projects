@@ -14,7 +14,7 @@ npm run dev
 ```sh
 https://github.com/juanmadev1/projects
 
-cd mern-tasks-auth
+cd projects
 npm i
 npm run build
 npm start
